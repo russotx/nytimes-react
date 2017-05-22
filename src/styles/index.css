@@ -78,6 +78,14 @@ input:hover{
   background-color: lightgoldenrodyellow;
 }
 
+.valid-input {
+  background-color: white;
+}
+
+.invalid-input {
+  background-color: #FFA8A8;
+}
+
 .submit-button {
   width: 30%;
   padding: 40px;

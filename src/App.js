@@ -8,7 +8,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
+        <div className="app-header">
           <h1>New York Times Article Scrubber</h1>          
           <p>Search for and anotate articles of interest!</p>
         </div>

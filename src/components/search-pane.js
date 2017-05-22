@@ -1,35 +1,11 @@
 import React, { Component } from 'react';
 
-/*class InputBox extends Component {
-  constructor(props) {
-    super(props);
-    this.state={value:''};
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event){
-    this.setState({value: event.target.value});
-  }
-
-  render(){
-    return (
-      <div className="input-box">
-        <label>{this.props.inputTitle}</label>
-        <input 
-          type={this.props.inputType}
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
-      </div>
-    )
-  }
-}*/
-
 class SearchPane extends Component {
   constructor(props) {
     super(props)
     this.state = {topic: '', startYear: '', endYear: ''};
     this.showText = this.showText.bind(this);
+    this.fetchArticles = this.fetchArticles.bind(this);
   }
 
   showText(event){
@@ -37,17 +13,28 @@ class SearchPane extends Component {
     this.setState({ [name]: event.target.value});
   }
 
+  fetchArticles(event){
+    const searchTopic = this.state.topic;
+    const searchStart = this.state.startYear; 
+    const searchEnd = this.state.endYear; 
+    console.log(searchTopic);
+  }
+
   render(){
     return (
       <div className="comp-pane">
         <h3 className="title-box">Search</h3>
-        <form>
-          <label>Topic</label>
+        <form onSubmit={this.fetchArticles}>
+          <label>Topic
           <input name="topic" type="text" value={this.state.topic} onChange={this.showText}/>
-          <label>Start Year</label>
+          </label>
+          <label>Start Year
           <input name="startYear" type="text" value={this.state.startYear} onChange={this.showText}/>
-          <label>End Year</label>
+          </label>
+          <label>End Year
           <input name="endYear" type="text" value={this.state.endYear} onChange={this.showText}/>
+          </label>
+          <input className="submit-button" name="Submit" type="submit" value="submit"/>
         </form>
       </div>
     );

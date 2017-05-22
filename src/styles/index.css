@@ -51,12 +51,19 @@ h3 {
   margin-bottom: 20px;
 }
 
-.input-box {
-  width: 100%;
-  margin-bottom: 10px;
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
+}
+
+label {
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 input {
@@ -67,9 +74,21 @@ input {
   font-size: 20px;
 }
 
-form {
+input:hover{
+  background-color: lightgoldenrodyellow;
+}
+
+.submit-button {
+  width: 30%;
+  padding: 40px;
   display: flex;
   flex-direction: column;
+  align-content: center;
+  justify-content: center;
   align-items: center;
-  width: 80%;
+  background-color: slateblue;
+}
+
+.submit-button:hover {
+  background-color: lightskyblue;
 }

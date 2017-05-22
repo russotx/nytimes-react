@@ -1,0 +1,28 @@
+
+# Components
+
+  - header (always looks the same)
+  - search box (static layout)
+    - Topic search
+      > dynamic user input
+    - start year search
+      > dynamic user input     
+    - end year search
+      > dynamic user input
+    - search button (always looks the same)
+  - Results box
+    * gets updated with article results
+    - article result
+      * content below gets generated dynamically  
+      > headline
+      - save button (always looks the same)
+  - Saved articles box
+    * gets updated with saved articles
+    - saved article
+        * content below is generated dynamically
+        > headline
+        > date saved
+        > snippet
+      - remove button (always looks the same)
+
+

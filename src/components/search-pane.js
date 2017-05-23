@@ -4,9 +4,9 @@ class SearchPane extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      topic: '', 
-      startYear: '', 
-      endYear: '', 
+      topic: "", 
+      startYear: "", 
+      endYear: "", 
       syValid: true, 
       eyValid: true
     };
@@ -21,7 +21,6 @@ class SearchPane extends Component {
     this.setState({ [name]: event.target.value});
     console.log(this.syValid);
   }
-
 
   isYearValid(field, year) {
     const validTag = field === "startYear" ? "syValid" : "eyValid";
@@ -39,20 +38,29 @@ class SearchPane extends Component {
     }
   }
 
-  fetchArticles(topic,start,end) {
-
-  }
-
   handleSubmit(event){
     event.preventDefault();
     const searchTopic = this.state.topic;
     const searchStart = this.state.startYear; 
     const searchEnd = this.state.endYear; 
-    this.isYearValid("startYear",searchStart);
-    this.isYearValid("endYear",searchEnd);
-    
+    let okToProceed = true;
+    if (searchStart != ""){
+      okToProceed = this.isYearValid("startYear",searchStart);
+    }
+    if (searchEnd != "") {
+      okToProceed = this.isYearValid("endYear",searchEnd);
+    }
+    if (okToProceed) {
+      const criteriaForApp = {
+        topic : searchTopic,
+        start : searchStart,
+        end : searchEnd
+      };
+      // function form App that updates the criteria in state
+      this.props.grabCriteria(criteriaForApp);
+    }
   }
-
+  
   render(){
     return (
       <div className="comp-pane">

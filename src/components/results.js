@@ -7,7 +7,11 @@ class Results extends Component {
   }
   
   render(){
-    return null;
+    return (
+      <div>
+        
+      </div>
+    );
   }
 }
 

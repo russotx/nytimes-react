@@ -36,6 +36,8 @@ class App extends Component {
         end: srchOps.end
       }
     });
+    console.log('the criteria');
+    console.log(this.state.criteria);
   }
 
   fetchResults(){

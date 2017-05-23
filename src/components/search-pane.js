@@ -49,6 +49,7 @@ class SearchPane extends Component {
     if (searchEnd !== "") {
       okToProceed = this.isYearValid("endYear",searchEnd);
     }
+    console.log("data validation result: "+okToProceed);
     if (okToProceed) {
       const criteriaForApp = {
         topic : searchTopic,

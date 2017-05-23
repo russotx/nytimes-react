@@ -40,13 +40,15 @@ class Results extends Component {
     return (
       <div className="comp-pane">
         <h3 className="title-box">Results</h3>
-        {results.map((item)=>{
-          <Article 
-            heading={item.heading}
-            link={item.weblink}
-            snippet={item.snippet}
-            author={item.writer}
-          />
+        {results.map((item) => {
+          return (
+            <Article 
+              heading={item.heading}
+              link={item.weblink}
+              snippet={item.snippet}
+              author={item.writer}
+            />
+          );
         })}    
       </div>
     );

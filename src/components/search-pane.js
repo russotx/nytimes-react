@@ -23,7 +23,7 @@ class SearchPane extends Component {
 
   isYearValid(field, year) {
     const validTag = field === "startYear" ? "syValid" : "eyValid";
-    if ((((parseInt(year)).toString()).length != 4) || (year.length > 4)) {
+    if ((((parseInt(year, 10)).toString()).length !== 4) || (year.length > 4)) {
         this.setState({ 
           [field] : "please use YYYY format",
           [validTag] : false
@@ -43,10 +43,10 @@ class SearchPane extends Component {
     const searchStart = this.state.startYear; 
     const searchEnd = this.state.endYear; 
     let okToProceed = true;
-    if (searchStart != ""){
+    if (searchStart !== ""){
       okToProceed = this.isYearValid("startYear",searchStart);
     }
-    if (searchEnd != "") {
+    if (searchEnd !== "") {
       okToProceed = this.isYearValid("endYear",searchEnd);
     }
     if (okToProceed) {

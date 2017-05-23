@@ -19,7 +19,7 @@ class App extends Component {
 
   isYearVal(yearQuery,queryParam) {
     let yearURLAddin;
-    if (yearQuery != "0") {
+    if (yearQuery !== "0") {
       yearURLAddin = queryParam;
       yearURLAddin+= yearQuery;
     } else {

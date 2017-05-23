@@ -1,15 +1,53 @@
 import React, { Component } from 'react';
 
+
+class Article extends Component {
+  constructor(props){
+    super(props);
+    this.saveArticle=this.saveArticle.bind(this);
+  }
+
+  saveArticle(){
+    let newArticle = {
+      heading : this.props.heading,
+      link : this.props.link,
+      snippet : this.props.snippet,
+      author : this.props.writer
+    }
+    // mongoose post newArticle to MongoDB
+  }
+
+  render(){
+    return (
+      <div className="article-result">
+        {this.props.heading}
+        <button className="save-button" onClick="saveArticle" type="button">Save</button>
+      </div>
+    )
+  }
+}
+
 class Results extends Component {
   constructor(props) {
     super(props)
-    
+    this.state={
+
+    }
   }
-  
+
   render(){
+    let results = this.props.resultsArray;
     return (
-      <div>
-        
+      <div className="comp-pane">
+        <h3 className="title-box">Results</h3>
+        {results.map((item)=>{
+          <Article 
+            heading={item.heading}
+            link={item.weblink}
+            snippet={item.snippet}
+            author={item.writer}
+          />
+        })}    
       </div>
     );
   }

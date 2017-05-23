@@ -7,7 +7,12 @@ class SavedArticles extends Component {
   }
   
   render(){
-    return null;
+    return(
+      <div className="comp-pane">
+        <h3 className="title-box">Saved Articles</h3>
+        
+      </div>
+    );
   }
 }
 

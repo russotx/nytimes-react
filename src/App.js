@@ -76,7 +76,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="app-header">
-          <h1>New York Times Article Scrubber</h1>          
+          <h1>New York Times Article Scrubber</h1>
           <p>Search for and anotate articles of interest!</p>
         </div>
         <SearchPane

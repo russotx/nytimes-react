@@ -11,7 +11,6 @@ class SearchPane extends Component {
       eyValid: true
     };
     this.showText = this.showText.bind(this);
-    this.fetchArticles = this.fetchArticles.bind(this);
     this.isYearValid = this.isYearValid.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }

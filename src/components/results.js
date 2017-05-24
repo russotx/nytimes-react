@@ -32,6 +32,10 @@ class Results extends Component {
     super(props)
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.forceUpdate();
+  }
+
   render(){
     let results = this.props.results;
     console.log("inside results.js ",results);

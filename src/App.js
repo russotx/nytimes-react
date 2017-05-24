@@ -47,7 +47,7 @@ class App extends Component {
     const endYear = this.state.endYear;
     let addBeginDate = this.isYearVal(startYear,"&begin_date:") + "0101";
     let addEndDate = this.isYearVal(endYear,"&end_date:") + "1231";
-    let queryURL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + topic + addBeginDate + addEndDate+"&apikey="+timesAPIkey;
+    let queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + topic + addBeginDate + addEndDate+"&apikey="+timesAPIkey;
     // submit query via axios
     axios.get(queryURL)
     .then((nyt)=>{

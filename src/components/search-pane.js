@@ -16,7 +16,7 @@ class SearchPane extends Component {
   // showText updates App state as the user inputs text
   showText(event){
     const name = event.target.name;
-    this.props.stateSetter({ [name]: event.target.value});
+    this.props.appStateSetter({ [name]: event.target.value});
   }
 
   // isYearValid validates the year input data when the user clicks Submit
@@ -26,7 +26,7 @@ class SearchPane extends Component {
     // the corresponding form field
     const validTag = field === "startYear" ? "syValid" : "eyValid";
     if ((((parseInt(year, 10)).toString()).length !== 4) || (year.length > 4)) {
-        this.props.stateSetter({ 
+        this.props.appStateSetter({ 
           // set a variable field of App.state to warning text
           [field] : "please use YYYY format"
         });
@@ -62,7 +62,7 @@ class SearchPane extends Component {
       };
       // make sure to update state with the final values and run callback after state is changed
       // this.props.fetchResults triggers an api request to NY Times via App.
-      this.props.stateSetter(criteriaForApp,this.props.fetchResults);
+      this.props.appStateSetter(criteriaForApp,this.props.fetchResults);
     }
   }
   

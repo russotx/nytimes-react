@@ -3,25 +3,25 @@ import React, { Component } from 'react';
 class Article extends Component {
   constructor(props){
     super(props);
-    this.saveArticle=this.saveArticle.bind(this);
+    // this.saveArticle=this.saveArticle.bind(this);
   }
 
-  saveArticle(){
-    // let newArticle = {
-    //   heading : this.props.heading,
-    //   link : this.props.link,
-    //   snippet : this.props.snippet,
-    //   author : this.props.writer
-    // }
-    console.log("Saved Article");
-    // mongoose post newArticle to MongoDB
-  }
+  // saveArticle(){
+  //   // let newArticle = {
+  //   //   heading : this.props.heading,
+  //   //   link : this.props.link,
+  //   //   snippet : this.props.snippet,
+  //   //   author : this.props.writer
+  //   // }
+  //   console.log("Saved Article");
+  //   // mongoose post newArticle to MongoDB
+  // }
 
   render(){
     return (
       <div className="article-result">
         {this.props.heading}
-        <button className="save-button" onClick="saveArticle" type="button">Save</button>
+        <button className="save-button" /*>onClick="saveArticle"*/ type="button">Save</button>
       </div>
     )
   }
@@ -32,13 +32,16 @@ class Results extends Component {
     super(props)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.forceUpdate();
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.forceUpdate();
+  // }
 
   render(){
     let results = this.props.results;
-    console.log("inside results.js ",results);
+
+    console.log("inside results.js, props.results: ",this.props.results);
+    console.log("inside results.js, results: ",results);
+
     return (
       <div className="comp-pane">
         <h3 className="title-box">Results</h3>

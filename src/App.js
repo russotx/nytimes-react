@@ -4,7 +4,7 @@ import SavedArticles from './components/saved-articles';
 import SearchPane from './components/search-pane';
 import axios from 'axios';
 
-let results = [];
+// let results = [];
 
 class App extends Component {
   constructor(props){
@@ -12,8 +12,10 @@ class App extends Component {
     this.state = {
       topic: "", 
       startYear: "", 
-      endYear: "", 
+      endYear: "",
+      nytQueryed: false 
     }
+    this.results = [];
     this.fetchResults = this.fetchResults.bind(this);   
     this.stateSetter = this.stateSetter.bind(this);
   }
@@ -29,18 +31,23 @@ class App extends Component {
     return yearURLAddin;
   }
 
-  stateSetter({topic, startYear, endYear}, callback){
+  // componentDidUpdate(){
+  //   this.setState({nytQueryed : false});
+  // }
+
+  stateSetter({topic, startYear, endYear, nytQueryed}, callback){
     this.setState({
       topic : topic !== undefined ? topic : this.state.topic,
       startYear : startYear !== undefined ? startYear : this.state.startYear,
-      endYear : endYear !== undefined ? endYear : this.state.endYear
+      endYear : endYear !== undefined ? endYear : this.state.endYear,
+      nytQueryed : nytQueryed !== undefined ? nytQueryed : this.state.nytQueryed
     },callback);
-    console.log("updated state: ",this.state);
+//console.log("updated state: ",this.state);
   }
   
   fetchResults(){
     // build the query URL
-    results = [];
+    this.results = [];
     const timesAPIkey = "be5cc745c3c94ed9b9e7274a87544151";
     const topic = this.state.topic.trim().split(" ").join("+");
     const startYear = this.state.startYear;
@@ -51,23 +58,30 @@ class App extends Component {
     // submit query via axios
     axios.get(queryURL)
     .then((nyt)=>{
-      // cut results to the first 5.
+
       console.log("NYT response ",nyt);
+      
+      // cut results to the first 5
       let resArray = nyt.data.response.docs.slice(0,5);
+
       console.log("resArray ",resArray);
+
       resArray.forEach((result) => {
         let article = {};
-        article.heading = result.headline.main;
-        article.writer = result.byline.original;
-        article.snippet = result.lead_paragraph;
-        article.webLink = result.web_url;
-        results.push(article);
+        let byline = result.byline;
+        let headline = result.headline;
+        article.heading = headline !== null ? headline.main || "headline not provided" : "headline not provided";
+        article.writer = byline !== null ? result.byline.original || "author not provided" : "author not provided";
+        article.pubDate = result.pub_date || "date not provided";
+        article.webLink = result.web_url || "url not provided";
+        this.results.push(article);
       });
-      console.log("end of axios call ",results);
+      console.log("end of axios call ",this.results);
+      this.setState({nytQueryed : true});
     })
     .catch((error)=>{
       console.log(error);
-      this.setState({topic: "Search Error."});
+      // this.setState({topic: "Search Error.", nytQueryed : false});
     });
   }
 
@@ -78,6 +92,7 @@ class App extends Component {
   // }
 
   render() {
+    console.log("App state = ",this.state);
     return (
       <div className="App">
         <div className="app-header">
@@ -85,14 +100,14 @@ class App extends Component {
           <p>Search for and anotate articles of interest!</p>
         </div>
         <SearchPane
-          stateSetter={this.stateSetter}
+          appStateSetter={this.stateSetter}
           topic={this.state.topic}
           startYear={this.state.startYear}
           endYear={this.state.endYear}
           fetchResults={this.fetchResults}
         />
         <Results 
-          results={results}
+          results={this.results}
           /*saveTheArticle={this.saveIt}*/
         />
         <SavedArticles

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 class Article extends Component {
   constructor(props){
     super(props);
@@ -8,12 +7,13 @@ class Article extends Component {
   }
 
   saveArticle(){
-    let newArticle = {
-      heading : this.props.heading,
-      link : this.props.link,
-      snippet : this.props.snippet,
-      author : this.props.writer
-    }
+    // let newArticle = {
+    //   heading : this.props.heading,
+    //   link : this.props.link,
+    //   snippet : this.props.snippet,
+    //   author : this.props.writer
+    // }
+    console.log("Saved Article");
     // mongoose post newArticle to MongoDB
   }
 
@@ -30,13 +30,11 @@ class Article extends Component {
 class Results extends Component {
   constructor(props) {
     super(props)
-    this.state={
-
-    }
   }
 
   render(){
-    let results = this.props.resultsArray;
+    let results = this.props.results;
+    console.log("inside results.js ",results);
     return (
       <div className="comp-pane">
         <h3 className="title-box">Results</h3>

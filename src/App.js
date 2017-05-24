@@ -4,75 +4,78 @@ import SavedArticles from './components/saved-articles';
 import SearchPane from './components/search-pane';
 import axios from 'axios';
 
+let results = [];
+
 class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      criteria : {topic: '', start: '', end: ''},
-      searchResults : [],
-      savedArticles : []
+      topic: "", 
+      startYear: "", 
+      endYear: "", 
     }
     this.fetchResults = this.fetchResults.bind(this);   
-    this.setCriteria = this.setCriteria.bind(this);
-    this.saveIt = this.saveIt.bind(this);
+    this.stateSetter = this.stateSetter.bind(this);
   }
 
+  // isYearVal checks whether a value has been provided for startYear/endYear
+  // and 
   isYearVal(yearQuery,queryParam) {
-    let yearURLAddin;
+    let yearURLAddin ="";
     if (yearQuery !== "0") {
       yearURLAddin = queryParam;
       yearURLAddin+= yearQuery;
-    } else {
-      yearURLAddin = "";
-    }
+    } 
     return yearURLAddin;
   }
 
-  setCriteria(srchOps){
+  stateSetter({topic, startYear, endYear}, callback){
     this.setState({
-      criteria: {
-        topic: srchOps.topic,
-        start: srchOps.start,
-        end: srchOps.end
-      }
-    });
-    console.log('the criteria');
-    console.log(this.state.criteria);
+      topic : topic !== undefined ? topic : this.state.topic,
+      startYear : startYear !== undefined ? startYear : this.state.startYear,
+      endYear : endYear !== undefined ? endYear : this.state.endYear
+    },callback);
+    console.log("updated state: ",this.state);
   }
-
+  
   fetchResults(){
-    let searchBox = this.state.criteria.topic;
-    let bd = this.state.criteria.start;
-    let ed = this.state.criteria.end;
-    let addBeginDate = this.isYearVal(bd,"&begin_date:");
-    let addEndDate = this.isYearVal(ed,"&end_date:");
+    // build the query URL
+    results = [];
     const timesAPIkey = "be5cc745c3c94ed9b9e7274a87544151";
-    let queryURL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + searchBox + addBeginDate + addEndDate+"&apikey="+timesAPIkey;
+    const topic = this.state.topic.trim().split(" ").join("+");
+    const startYear = this.state.startYear;
+    const endYear = this.state.endYear;
+    let addBeginDate = this.isYearVal(startYear,"&begin_date:") + "0101";
+    let addEndDate = this.isYearVal(endYear,"&end_date:") + "1231";
+    let queryURL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + topic + addBeginDate + addEndDate+"&apikey="+timesAPIkey;
+    // submit query via axios
     axios.get(queryURL)
     .then((nyt)=>{
-      let resArray = nyt.response.docs;
-      let newArrayState = [];
-      let article = {};
-      for (let i=0;((i < (resArray).length) && (i < 5)); i++) {
-        article.heading = resArray[i].headline.main;
-        article.writer = resArray[i].byline.original;
-        article.snippet = resArray[i].lead_paragraph;
-        article.webLink = resArray[i].web_url;
-        newArrayState.push(article);
-      }
-      this.setState({searchResults: newArrayState});
+      // cut results to the first 5.
+      console.log("NYT response ",nyt);
+      let resArray = nyt.data.response.docs.slice(0,5);
+      console.log("resArray ",resArray);
+      resArray.forEach((result) => {
+        let article = {};
+        article.heading = result.headline.main;
+        article.writer = result.byline.original;
+        article.snippet = result.lead_paragraph;
+        article.webLink = result.web_url;
+        results.push(article);
+      });
+      console.log("end of axios call ",results);
     })
     .catch((error)=>{
       console.log(error);
-      this.setState({searchResults: [{heading:"Search Error."}]});
+      this.setState({topic: "Search Error."});
     });
   }
 
-  saveIt(article){
-    let artArray = this.state.savedArticles;
-    artArray.push(article);
-    this.setState({savedArticles: artArray});
-  }
+  // saveIt(article){
+  //   let artArray = this.state.savedArticles;
+  //   artArray.push(article);
+  //   this.setState({savedArticles: artArray});
+  // }
 
   render() {
     return (
@@ -82,14 +85,18 @@ class App extends Component {
           <p>Search for and anotate articles of interest!</p>
         </div>
         <SearchPane
-          grabCriteria={this.setCriteria}
+          stateSetter={this.stateSetter}
+          topic={this.state.topic}
+          startYear={this.state.startYear}
+          endYear={this.state.endYear}
+          fetchResults={this.fetchResults}
         />
         <Results 
-          resultsArray={this.state.searchResults}
-          saveTheArticle={this.saveIt}
+          results={results}
+          /*saveTheArticle={this.saveIt}*/
         />
         <SavedArticles
-          savedArray={this.state.savedArticles}
+          /*savedArray={this.state.savedArticles}*/
         />
       </div>
     );

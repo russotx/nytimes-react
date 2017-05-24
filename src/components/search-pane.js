@@ -3,61 +3,66 @@ import React, { Component } from 'react';
 class SearchPane extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      topic: "", 
-      startYear: "", 
-      endYear: "", 
-      syValid: true, 
-      eyValid: true
-    };
+    // this.state = {
+    // };
+    this.syValid = true; 
+    this.eyValid = true;
     this.showText = this.showText.bind(this);
+    //this.inputText = this.inputText.bind(this);
     this.isYearValid = this.isYearValid.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  
+  // showText updates App state as the user inputs text
   showText(event){
     const name = event.target.name;
-    this.setState({ [name]: event.target.value});
-    console.log(this.syValid);
+    this.props.stateSetter({ [name]: event.target.value});
   }
 
+  // isYearValid validates the year input data when the user clicks Submit
   isYearValid(field, year) {
+    // set validTag to the appropriate tag based on whether startYear/endYear is passed in
+    // syValid and eyValid are used to toggle a class to change the background color of
+    // the corresponding form field
     const validTag = field === "startYear" ? "syValid" : "eyValid";
     if ((((parseInt(year, 10)).toString()).length !== 4) || (year.length > 4)) {
-        this.setState({ 
-          [field] : "please use YYYY format",
-          [validTag] : false
+        this.props.stateSetter({ 
+          // set a variable field of App.state to warning text
+          [field] : "please use YYYY format"
         });
+        this[validTag] = false;
         return false;
     } else {
-      this.setState({
-        [validTag] : true
-      })
+      this[validTag] = true;
       return true;
     }
   }
 
+  // handleSubmit runs when user clicks submit, it validates the year input data
+  // requests state update in App and submits a callback to App's setState
+  // which runs the API request
   handleSubmit(event){
     event.preventDefault();
-    const searchTopic = this.state.topic;
-    const searchStart = this.state.startYear; 
-    const searchEnd = this.state.endYear; 
+    const topic = this.props.topic;
+    const startYear = this.props.startYear; 
+    const endYear = this.props.endYear; 
     let okToProceed = true;
-    if (searchStart !== ""){
-      okToProceed = this.isYearValid("startYear",searchStart);
+    if (startYear !== ""){
+      okToProceed = this.isYearValid("startYear",startYear);
     }
-    if (searchEnd !== "") {
-      okToProceed = this.isYearValid("endYear",searchEnd);
+    if (endYear !== "") {
+      okToProceed = this.isYearValid("endYear",endYear);
     }
     console.log("data validation result: "+okToProceed);
     if (okToProceed) {
       const criteriaForApp = {
-        topic : searchTopic,
-        start : searchStart,
-        end : searchEnd
+        topic : topic,
+        startYear : startYear,
+        endYear : endYear
       };
-      // function form App that updates the criteria in state
-      this.props.grabCriteria(criteriaForApp);
+      // make sure to update state with the final values and run callback after state is changed
+      // this.props.fetchResults triggers an api request to NY Times via App.
+      this.props.stateSetter(criteriaForApp,this.props.fetchResults);
     }
   }
   
@@ -65,30 +70,33 @@ class SearchPane extends Component {
     return (
       <div className="comp-pane">
         <h3 className="title-box">Search</h3>
+        {/* run handleSubmit on Submit button click */}
         <form onSubmit={this.handleSubmit}>
           <label>Topic
           <input 
             name="topic" 
             type="text" 
-            value={this.state.topic} 
+            // topic is state of App and passed back here as the value in the form field
+            value={this.props.topic} 
+            // showText runs a props function from App to update App's state
             onChange={this.showText}/>
           </label>
           <label>Start Year
           <input 
             name="startYear" 
             placeholder="YYYY"
-            className={this.state.syValid ? "valid-input" : "invalid-input"} 
+            className={this.syValid ? "valid-input" : "invalid-input"} 
             type="number" 
-            value={this.state.startYear} 
+            value={this.props.startYear} 
             onChange={this.showText}/>
           </label>
           <label>End Year
           <input 
             name="endYear" 
             placeholder="YYYY"
-            className={this.state.eyValid ? "valid-input" : "invalid-input"} 
-            type="number" 
-            value={this.state.endYear} 
+            className={this.eyValid ? "valid-input" : "invalid-input"} 
+            type="number"
+            value={this.props.endYear} 
             onChange={this.showText}/>
           </label>
           <input className="submit-button" name="Submit" type="submit" value="submit"/>

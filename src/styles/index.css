@@ -33,6 +33,11 @@ h3 {
   margin: 0;
 }
 
+h4 {
+  font-size: 1em;
+  margin: 5px 0 5px 30px;
+}
+
 .comp-pane {
   margin: 20px 0 20px 0;
   overflow: hidden;
@@ -95,10 +100,45 @@ input:hover{
   align-content: center;
   justify-content: center;
   align-items: center;
+  color: white;
   background-color: slateblue;
   box-shadow: -3px 3px 5px -1px black;
 }
 
 .submit-button:hover {
+  background-color: lightskyblue;
+}
+
+.article-result {
+  padding: 5px;
+  width: 80%;
+  border: solid 1px black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  box-shadow: -1px 1px 1px 0 black;
+}
+
+.article-result:hover {
+  padding: 10px;
+  margin: 8px;
+
+}
+
+.save-button {
+  border: solid 1px black;
+  padding: 3px;
+  font-size: 1em;
+  text-align: center;
+  margin-right: 10px;
+  color: white;
+  background-color: slateblue;
+  font-weight: 600;
+  box-shadow: -1px 1px 1px 0 black;
+}
+
+.save-button:hover {
   background-color: lightskyblue;
 }

@@ -8,7 +8,6 @@ class SearchPane extends Component {
     this.syValid = true; 
     this.eyValid = true;
     this.showText = this.showText.bind(this);
-    //this.inputText = this.inputText.bind(this);
     this.isYearValid = this.isYearValid.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }

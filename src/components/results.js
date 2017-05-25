@@ -20,7 +20,7 @@ class Article extends Component {
   render(){
     return (
       <div className="article-result">
-        {this.props.heading}
+        <h4>{this.props.heading}</h4>
         <button className="save-button" /*>onClick="saveArticle"*/ type="button">Save</button>
       </div>
     )

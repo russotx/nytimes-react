@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Results from './components/results';
 import SavedArticles from './components/saved-articles';
 import SearchPane from './components/search-pane';

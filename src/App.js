@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Results from './components/results';
 import SavedArticles from './components/saved-articles';
 import SearchPane from './components/search-pane';
 import axios from 'axios';
-
-// let results = [];
 
 class App extends Component {
   constructor(props){
@@ -13,9 +12,8 @@ class App extends Component {
       topic: "", 
       startYear: "", 
       endYear: "",
-      nytQueryed: false 
+      results : [] 
     }
-    this.results = [];
     this.fetchResults = this.fetchResults.bind(this);   
     this.stateSetter = this.stateSetter.bind(this);
   }
@@ -31,18 +29,13 @@ class App extends Component {
     return yearURLAddin;
   }
 
-  // componentDidUpdate(){
-  //   this.setState({nytQueryed : false});
-  // }
-
-  stateSetter({topic, startYear, endYear, nytQueryed}, callback){
+  stateSetter({topic, startYear, endYear, nytQueryed, results}, callback){
     this.setState({
       topic : topic !== undefined ? topic : this.state.topic,
       startYear : startYear !== undefined ? startYear : this.state.startYear,
       endYear : endYear !== undefined ? endYear : this.state.endYear,
-      nytQueryed : nytQueryed !== undefined ? nytQueryed : this.state.nytQueryed
+      results : results !== undefined ? results : this.state.results
     },callback);
-//console.log("updated state: ",this.state);
   }
   
   fetchResults(){
@@ -63,7 +56,7 @@ class App extends Component {
       
       // cut results to the first 5
       let resArray = nyt.data.response.docs.slice(0,5);
-
+      let newResultState = [];
       console.log("resArray ",resArray);
 
       resArray.forEach((result) => {
@@ -74,14 +67,14 @@ class App extends Component {
         article.writer = byline !== null ? result.byline.original || "author not provided" : "author not provided";
         article.pubDate = result.pub_date || "date not provided";
         article.webLink = result.web_url || "url not provided";
-        this.results.push(article);
+        newResultState.push(article);
       });
       console.log("end of axios call ",this.results);
-      this.setState({nytQueryed : true});
+      this.setState({results: newResultState});
     })
     .catch((error)=>{
       console.log(error);
-      // this.setState({topic: "Search Error.", nytQueryed : false});
+      this.setState({topic: "Search Error."});
     });
   }
 
@@ -107,7 +100,7 @@ class App extends Component {
           fetchResults={this.fetchResults}
         />
         <Results 
-          results={this.results}
+          results={this.state.results}
           /*saveTheArticle={this.saveIt}*/
         />
         <SavedArticles

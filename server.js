@@ -2,14 +2,13 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
+
 const mongoURI = 'mongodb://heroku_s0jdcxjc:jhu1kbd1sb862og3aac5ehi2mf@ds019038.mlab.com:19038/heroku_s0jdcxjc';
 const bodyParser = require('body-parser');
 
 const localMongo = 'mongodb://localhost/nytreact';
 
-app.set('port', (process.env.PORT || 3000));
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
+app.set('port', (process.env.PORT || 3001));
 
 mongoose.connect(localMongo);
 
@@ -42,13 +41,22 @@ let articleSchema = new schema({
 let article = mongoose.model('article',articleSchema);
 
 app.use(express.static(path.join(__dirname,'build')));
+app.use(bodyParser.urlencoded({extended:false}));
 
-app.get('/api/saved', function(req,res){
+app.get('/api/saved/', function(req,res){
   // mongoose query saved articles
-  article.find({});
+  article.find({},(err,doc)=>{
+    if(err){
+      res.send(err); 
+      console.log(error);
+    } else {
+      console.log(doc);
+      res.send(doc);
+    }
+  });
 });
 
-app.post('/api/saved', function(req,res){
+app.post('/api/saved/', function(req,res){
   // mongoose save an article
   const incoming = req.body;
   article.create(incoming,(err)=>{
@@ -57,8 +65,9 @@ app.post('/api/saved', function(req,res){
   });
 });
 
-app.delete('api/saved', function(req,res){
+app.delete('/api/saved/', function(req,res){
   // mongoose delete article
+  console.log(req.body);
   incoming = req.body;
   article.remove({weblink: incoming.weblink},(err)=> {
     if (err) {return console.log(err); }

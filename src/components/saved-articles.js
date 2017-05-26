@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Article from './results';
 
-class Saved extends Component {
+class DBarticle extends Component {
   constructor(props){
     super(props);
     this.state={
 
     }
+    this.delArticle = this.delArticle.bind(this);
   }
 
-  delArticle(article){
-    axios.delete('/api/saved')
+  delArticle(){
+    axios({
+      method: 'delete',
+      url: '/api/saved',
+      data: this.props.weblink
+    })
       .then((res)=>{
-
+        this.props.killArticle(this.props.key);
       })
       .catch((err)=>{
         console.log(err);
@@ -21,10 +26,13 @@ class Saved extends Component {
   }
 
   render(){
+    // console.log("the heading: ",this.props.heading)
     return (
       <div className="article-result">
-        <h4>{this.props.headin}</h4>
-        <button className="save-button" onClick={this.delArticle(this.props.article)} type="button">Remove</button>
+        <p>{this.props.date}</p>
+        <h4>{this.props.heading}</h4>
+        <button className="save-button" onClick={this.delArticle} type="button">Remove</button>
+        <p>{this.props.weblink}</p>
       </div>
     )
   }
@@ -36,33 +44,43 @@ class SavedArticles extends Component {
     this.state = {
       savedArticles : []
     }
+    this.killArticle.bind(this);
   }
 
-  componentWillMount(){
+  killArticle(key){
+    let newState = this.state.savedArticles.splice(key,1);
+    this.setState({savedArticles: newState});
+  }
+
+  componentDidMount(){
     axios.get('/api/saved')
-    .then((articles)=>{
+    .then((res)=>{
+      let articles = res.data; 
       this.setState({savedArticles : articles});
+      console.log(this.state);
     })
     .catch((err)=>{
-      console.log('error receiving articles from DB');
+      console.log('error receiving articles from DB',err);
     })
   }
 
   render(){
+    console.log("savedArticles: ",this.state.savedArticles);
+    console.log("state: ",this.state);
     return(
       <div className="comp-pane">
         <h3 className="title-box">Saved Articles</h3>
-        <div>
-          {this.state.articles.map((item, index)=>{
+          {this.state.savedArticles.map((item, index)=>{
             return (
-              <Article
+              <DBarticle
                 key={index}
                 heading={item.heading}
-                link={item.weblink}
+                weblink={item.weblink}
+                date={item.date}
+                killArticle={this.killArticle}
               />
             );
           })}
-        </div>
       </div>
     );
   }

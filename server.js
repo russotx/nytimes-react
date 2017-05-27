@@ -65,14 +65,21 @@ app.post('/api/saved/', function(req,res){
   });
 });
 
+// passing in the weblink
 app.delete('/api/saved/', function(req,res){
   // mongoose delete article
-  console.log(req.body);
-  incoming = req.body;
-  article.remove({weblink: incoming.weblink},(err)=> {
-    if (err) {return console.log(err); }
-    else { return console.log("removed"); }
+  console.log("data passed to app.delete ",req.query);
+  // const newArticle = new article(req.body);
+  article.findOneAndRemove({weblink: req.query.weblink},(err)=>{
+    if (err) {console.log("error deleting doc ",err);}
   })
+  .then((doc)=>{
+    res.json(doc);
+  })
+
+
+// NEED TO RESPOND TO AXIOS WITH SUCCESS MESSAGE SO .THEN CAN RUN
+  
 });
 
 app.get('*', function(req,res){

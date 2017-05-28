@@ -1,11 +1,10 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const mongoURI = 'mongodb://heroku_s0jdcxjc:jhu1kbd1sb862og3aac5ehi2mf@ds019038.mlab.com:19038/heroku_s0jdcxjc';
-const bodyParser = require('body-parser');
-
 const localMongo = 'mongodb://localhost/nytreact';
 
 app.set('port', (process.env.PORT || 3001));
@@ -31,8 +30,8 @@ let articleSchema = new schema({
     trim : true,
     required : "Weblink is Required"
   },
-  date : {
-    type : Date,
+  pubDate : {
+    type : String,
     trim : false,
     required : "Date is not Required"
   }
@@ -41,11 +40,12 @@ let articleSchema = new schema({
 let article = mongoose.model('article',articleSchema);
 
 app.use(express.static(path.join(__dirname,'build')));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
 app.get('/api/saved/', function(req,res){
   // mongoose query saved articles
-  article.find({},(err,doc)=>{
+  article.find({},(err,doc) => {
     if(err){
       res.send(err); 
       console.log(error);
@@ -56,20 +56,19 @@ app.get('/api/saved/', function(req,res){
   });
 });
 
-app.post('/api/saved/', function(req,res){
-  // mongoose save an article
-  const incoming = req.body;
-  article.create(incoming,(err)=>{
-    if (err) { return console.log(err) }
-    else { return console.log('saved'); }
-  });
+app.post('/api/saved/', function(req,res){ // mongoose save an article 
+  console.log("data to post ",req.body);
+  let incoming = req.body; 
+  article.create(incoming)
+  .then((doc) => res.json(doc))
+  .catch((err) => console.log(err));
+
 });
 
 // passing in the weblink
 app.delete('/api/saved/', function(req,res){
   // mongoose delete article
   console.log("data passed to app.delete ",req.query);
-  // const newArticle = new article(req.body);
   article.findOneAndRemove({weblink: req.query.weblink},(err)=>{
     if (err) {console.log("error deleting doc ",err);}
   })
@@ -77,9 +76,6 @@ app.delete('/api/saved/', function(req,res){
     res.json(doc);
   })
 
-
-// NEED TO RESPOND TO AXIOS WITH SUCCESS MESSAGE SO .THEN CAN RUN
-  
 });
 
 app.get('*', function(req,res){

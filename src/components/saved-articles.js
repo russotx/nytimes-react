@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Article from './results';
 
 // THE ARTICLE THAT GETS RENDERED FROM THE DB
 class DBarticle extends Component {
@@ -28,11 +27,9 @@ class DBarticle extends Component {
   }
 
   render(){
-    // console.log("the heading: ",this.props.heading)
-    console.log(" id in article render = ",this.props.id);
     return (
       <div className="article-result">
-        <p>{this.props.date}</p>
+        <p>{this.props.pubDate}</p>
         <h4>{this.props.heading}</h4>
         <button className="save-button" onClick={this.delArticle} type="button">Remove</button>
         <p>{this.props.weblink}</p>
@@ -84,7 +81,7 @@ class SavedArticles extends Component {
                 id={index}
                 heading={item.heading}
                 weblink={item.weblink}
-                date={item.date}
+                pubDate={item.pubDate}
                 killArticle={this.killArticle}
               />
             );

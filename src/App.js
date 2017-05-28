@@ -50,22 +50,19 @@ class App extends Component {
     // submit query via axios
     axios.get(queryURL)
     .then((nyt)=>{
-
       console.log("NYT response ",nyt);
-      
       // cut results to the first 5
       let resArray = nyt.data.response.docs.slice(0,5);
       let newResultState = [];
       console.log("resArray ",resArray);
-
       resArray.forEach((result) => {
         let article = {};
         let byline = result.byline;
         let headline = result.headline;
         article.heading = headline !== null ? headline.main || "headline not provided" : "headline not provided";
-        article.writer = byline !== null ? result.byline.original || "author not provided" : "author not provided";
+        article.author = byline !== null ? result.byline.original || "author not provided" : "author not provided";
         article.pubDate = result.pub_date || "date not provided";
-        article.webLink = result.web_url || "url not provided";
+        article.weblink = result.web_url || "url not provided";
         newResultState.push(article);
       });
       console.log("end of axios call ",this.results);
@@ -98,13 +95,8 @@ class App extends Component {
           endYear={this.state.endYear}
           fetchResults={this.fetchResults}
         />
-        <Results 
-          results={this.state.results}
-          /*saveTheArticle={this.saveIt}*/
-        />
-        <SavedArticles
-          /*savedArray={this.state.savedArticles}*/
-        />
+        <Results results={this.state.results}/>
+        <SavedArticles/>
       </div>
     );
   }

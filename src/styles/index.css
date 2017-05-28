@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Sorts Mill Goudy';
   box-sizing: border-box;
   background-color: #E7E6E7;
   color: #262626;
@@ -26,9 +26,10 @@ body {
 
 h1 {
   font-size: 2.2em;
-  font-weight: 400;
-  border-bottom: solid 3px #262626;
+  font-weight: 600;
+  border-bottom: solid 1px #262626;
   color: #262626;
+  font-family: 'Josefin Slab';
 }
 
 h3 {
@@ -38,9 +39,10 @@ h3 {
 }
 
 h4 {
-  font-size: 1em;
+  font-size: 1.1em;
   margin: 5px 0 5px 30px;
   color: #262626;
+  font-family: 'Josefin Slab';
 }
 
 .comp-pane {
@@ -54,6 +56,7 @@ h4 {
   font-weight: 300;
   color: #262626;
   background-color: #D9D9D9;
+  box-shadow: -1px 1px 6px .5px #262626;
 }
 
 .title-box {
@@ -120,6 +123,7 @@ input:hover{
   border: none;
   border-radius: 15px;
   align-items: center;
+  font-family: 'Sorts Mill Goudy';
   font-weight: 200;
   color: #d9ced4;
   background-color: #262626;
@@ -141,7 +145,7 @@ input:hover{
 }
 
 .article-result {
-  padding: 5px;
+  padding: 8px;
   width: 80%;
   border-radius: 5px;
   background-color: #E7E6E7;
@@ -155,7 +159,7 @@ input:hover{
 }
 
 .article-result:hover {
-  padding: 12px 5px;  
+  padding: 12px 8px;  
   transform: translateY(-20%);
   transition: .2s ease-in-out;
   margin: 8px;
@@ -172,6 +176,7 @@ input:hover{
 
 .save-button {
   border: solid 1px #262626;
+  font-family: 'Sorts Mill Goudy';
   padding: 3px;
   font-size: 1em;
   text-align: center;
@@ -215,7 +220,7 @@ input:hover{
 
 .drop {
   z-index: 10;
-  animation: drop 2s .5s;
+  animation: drop 2s .2s;
 }
 
 @keyframes drop {
@@ -240,6 +245,7 @@ input:hover{
 
 .article-header h4 {
   float: left;
+  font-size: 1.2em;
   text-align: center;
   color: #262626;
   position: relative;

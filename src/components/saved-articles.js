@@ -27,13 +27,10 @@ class DBarticle extends Component {
     return (
       <div className={this.state.removed ? "saved-article drop" : "saved-article"}>
         <header className="article-header">
-          <h4>{this.props.heading}</h4>
+          <h4><a href={this.props.weblink} target="_blank">{this.props.heading}</a></h4>
           <button className="save-button" onClick={this.delArticle} type="button">&#x2716;</button>
         </header>
         <section className="article-details">
-          <p className="weblink">
-            <a href={this.props.weblink} target="_blank">Link to Article</a>
-          </p>
           <p className="pub-date">Published: {this.props.pubDate}</p>
         </section>
       </div>

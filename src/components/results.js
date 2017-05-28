@@ -29,7 +29,7 @@ class Article extends Component {
   render(){
     return (
       <div className={(this.state.saved) ? "article-result saved" : "article-result" }>
-        <h4>{this.props.heading}</h4>
+        <h4><a href={this.props.weblink} target="_blank">{this.props.heading}</a></h4>
         <button className="save-button" onClick={this.saveArticle} type="button">Save</button>
       </div>
     )

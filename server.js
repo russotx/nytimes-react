@@ -9,7 +9,7 @@ const localMongo = 'mongodb://localhost/nytreact';
 
 app.set('port', (process.env.PORT || 3001));
 
-mongoose.connect(localMongo);
+mongoose.connect(mongoURI || localMongo);
 
 let schema = mongoose.Schema;
 

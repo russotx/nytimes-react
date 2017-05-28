@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 class SearchPane extends Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    // };
     this.syValid = true; 
     this.eyValid = true;
     this.showText = this.showText.bind(this);
@@ -26,8 +24,7 @@ class SearchPane extends Component {
     const validTag = field === "startYear" ? "syValid" : "eyValid";
     if ((((parseInt(year, 10)).toString()).length !== 4) || (year.length > 4)) {
         this.props.appStateSetter({ 
-          // set a variable field of App.state to warning text
-          [field] : "please use YYYY format"
+          [field] : ""
         });
         this[validTag] = false;
         return false;
@@ -49,9 +46,12 @@ class SearchPane extends Component {
     if (startYear !== ""){
       okToProceed = this.isYearValid("startYear",startYear);
     }
-    if (endYear !== "") {
-      okToProceed = this.isYearValid("endYear",endYear);
-    }
+    // must check if okToProceed is true, if it's false - can't risk reassigning okToProceed to true
+    if (okToProceed) {
+      if (endYear !== "") {
+        okToProceed = this.isYearValid("endYear",endYear);
+      }
+    } else this.isYearValid("endYear",endYear);
     console.log("data validation result: "+okToProceed);
     if (okToProceed) {
       const criteriaForApp = {
@@ -62,7 +62,7 @@ class SearchPane extends Component {
       // make sure to update state with the final values and run callback after state is changed
       // this.props.fetchResults triggers an api request to NY Times via App.
       this.props.appStateSetter(criteriaForApp,this.props.fetchResults);
-    }
+    } 
   }
   
   render(){

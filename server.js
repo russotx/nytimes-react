@@ -57,7 +57,6 @@ app.get('/api/saved/', function(req,res){
 });
 
 app.post('/api/saved/', function(req,res){ // mongoose save an article 
-  console.log("data to post ",req.body);
   let incoming = req.body; 
   article.create(incoming)
   .then((doc) => res.json(doc))
@@ -68,7 +67,6 @@ app.post('/api/saved/', function(req,res){ // mongoose save an article
 // passing in the weblink
 app.delete('/api/saved/', function(req,res){
   // mongoose delete article
-  console.log("data passed to app.delete ",req.query);
   article.findOneAndRemove({weblink: req.query.weblink},(err)=>{
     if (err) {console.log("error deleting doc ",err);}
   })

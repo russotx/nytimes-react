@@ -6,33 +6,36 @@ class DBarticle extends Component {
   constructor(props){
     super(props);
     this.state={
-
+      removed: false
     }
     this.delArticle = this.delArticle.bind(this);
   }
 
   delArticle(){
-    console.log("prop.id ",this.props.id);
     axios.delete('/api/saved',
       { params: {weblink: this.props.weblink}})
       .then((res)=>{
-        console.log("res from express: ",res);
-        console.log('calling killArticle');
-        this.props.killArticle(this.props.id);
+        this.setState({removed:true});
+        this.props.killArticle(this.props.id); 
       })
       .catch((err)=>{
-        console.log("data passed to delArticle ",this.props.weblink);
         console.log(err);
       })
   }
 
   render(){
     return (
-      <div className="article-result">
-        <p>{this.props.pubDate}</p>
-        <h4>{this.props.heading}</h4>
-        <button className="save-button" onClick={this.delArticle} type="button">Remove</button>
-        <p>{this.props.weblink}</p>
+      <div className={this.state.removed ? "saved-article drop" : "saved-article"}>
+        <header className="article-header">
+          <h4>{this.props.heading}</h4>
+          <button className="save-button" onClick={this.delArticle} type="button">&#x2716;</button>
+        </header>
+        <section className="article-details">
+          <p className="weblink">
+            <a href={this.props.weblink} target="_blank">Link to Article</a>
+          </p>
+          <p className="pub-date">Published: {this.props.pubDate}</p>
+        </section>
       </div>
     )
   }
@@ -51,8 +54,7 @@ class SavedArticles extends Component {
   killArticle(id){
     let newState = this.state.savedArticles;
     newState.splice(id,1);
-    console.log('newState = ',newState);
-    this.setState({savedArticles: newState});
+    setTimeout(()=>{this.setState({savedArticles: newState})}, 2000);
   }
 
   componentDidMount(){
@@ -60,7 +62,6 @@ class SavedArticles extends Component {
     .then((res)=>{
       let articles = res.data; 
       this.setState({savedArticles : articles});
-      console.log(this.state);
     })
     .catch((err)=>{
       console.log('error receiving articles from DB',err);
@@ -68,16 +69,13 @@ class SavedArticles extends Component {
   }
 
   render(){
-    console.log("savedArticles: ",this.state.savedArticles);
-    console.log("state: ",this.state);
     return(
       <div className="comp-pane">
         <h3 className="title-box">Saved Articles</h3>
           {this.state.savedArticles.map((item, index)=>{
-            console.log(" index = ",index);
             return (
               <DBarticle
-                key={index}
+                key={item.weblink}
                 id={index}
                 heading={item.heading}
                 weblink={item.weblink}

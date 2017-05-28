@@ -5,6 +5,9 @@ import axios from 'axios';
 class Article extends Component {
   constructor(props){
     super(props);
+    this.state={
+      saved : false
+    }
     this.saveArticle=this.saveArticle.bind(this);
   }
 
@@ -15,15 +18,17 @@ class Article extends Component {
       weblink : this.props.weblink,
       pubDate : this.props.pubDate
     }
-    console.log(newArticle);
     axios.post('/api/saved/',newArticle)
-    .then((res) => console.log('Saved article | server response: ',res))
+    .then((res) => { 
+      console.log('Saved article | server response: ',res);
+      this.setState({saved : true});
+    })
     .catch((err) => console.log('Error saving article: ',err));
   }
 
   render(){
     return (
-      <div className="article-result">
+      <div className={(this.state.saved) ? "article-result saved" : "article-result" }>
         <h4>{this.props.heading}</h4>
         <button className="save-button" onClick={this.saveArticle} type="button">Save</button>
       </div>
@@ -39,8 +44,6 @@ class Results extends Component {
 
   render(){
     let results = this.props.results;
-    console.log("inside results.js, props.results: ",this.props.results);
-    console.log("inside results.js, results: ",results);
     return (
       <div className="comp-pane">
         <h3 className="title-box">Results</h3>

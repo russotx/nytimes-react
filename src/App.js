@@ -50,11 +50,9 @@ class App extends Component {
     // submit query via axios
     axios.get(queryURL)
     .then((nyt)=>{
-      console.log("NYT response ",nyt);
       // cut results to the first 5
       let resArray = nyt.data.response.docs.slice(0,5);
       let newResultState = [];
-      console.log("resArray ",resArray);
       resArray.forEach((result) => {
         let article = {};
         let byline = result.byline;
@@ -65,7 +63,6 @@ class App extends Component {
         article.weblink = result.web_url || "url not provided";
         newResultState.push(article);
       });
-      console.log("end of axios call ",this.results);
       this.setState({results: newResultState});
     })
     .catch((error)=>{
@@ -81,12 +78,10 @@ class App extends Component {
   // }
 
   render() {
-    console.log("App state = ",this.state);
     return (
       <div className="App">
         <div className="app-header">
           <h1>New York Times Article Scrubber</h1>
-          <p>Search for and anotate articles of interest!</p>
         </div>
         <SearchPane
           appStateSetter={this.stateSetter}

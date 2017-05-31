@@ -11,7 +11,7 @@ const localPORT = 3001;
 
 app.set('port', (process.env.PORT || localPORT));
 
-mongoose.connect(/*mongoURI*/ localMongo);
+mongoose.connect(mongoURI /*localMongo*/ );
 
 let schema = mongoose.Schema;
 

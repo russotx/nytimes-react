@@ -87,6 +87,8 @@ nav li:hover {
 nav a {
   text-decoration: none;
   color: #E7E6E7;
+  width: 100%;
+  text-align: center;
 }
 
 nav a:hover {
@@ -355,6 +357,21 @@ input:hover{
 
   h4 {
     order: 2;
+  }
+
+  .article-result {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .article-result h4 {
+    order: 2;
+  }
+
+  .save-button {
+    order: 1;
+    margin-bottom: 10px;
+    font-size: .9em;
   }
 
 }

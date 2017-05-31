@@ -14,7 +14,7 @@ class DBarticle extends Component {
   delArticle(){
     axios.delete('/api/saved',
       { params: {weblink: this.props.weblink}})
-      .then((res)=>{
+      .then(() => {
         this.setState({removed:true});
         this.props.killArticle(this.props.id); 
       })
@@ -27,7 +27,7 @@ class DBarticle extends Component {
     return (
       <div className={this.state.removed ? "saved-article drop" : "saved-article"}>
         <header className="article-header">
-          <h4><a href={this.props.weblink} target="_blank">{this.props.heading}</a></h4>
+          <h4><a href={this.props.weblink} target="_blank" rel="noopener noreferrer">{this.props.heading}</a></h4>
           <button className="save-button" onClick={this.delArticle} type="button">&#x2716;</button>
         </header>
         <section className="article-details">
@@ -50,12 +50,14 @@ class SavedArticles extends Component {
 
   killArticle(id){
     let newState = this.state.savedArticles;
-    newState.splice(id,1);
-    setTimeout(()=>{this.setState({savedArticles: newState})}, 2000);
+    const twoSecs = 2000;
+    const removeNum = 1;
+    newState.splice(id,removeNum);
+    setTimeout(()=>{this.setState({savedArticles: newState})}, twoSecs);
   }
 
   componentDidMount(){
-    axios.get('/api/saved')
+    axios.get('/api/saved/')
     .then((res)=>{
       let articles = res.data; 
       this.setState({savedArticles : articles});

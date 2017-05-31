@@ -19,17 +19,20 @@ class Article extends Component {
       pubDate : this.props.pubDate
     }
     axios.post('/api/saved/',newArticle)
-    .then((res) => { 
-      console.log('Saved article | server response: ',res);
-      this.setState({saved : true});
+    .then(() => {
+      let articleIndex = this.props.index; 
+      let newResults = this.props.results;
+      newResults[articleIndex].saved = true;
+      // this.setState({saved : true});
+      this.props.appStateSetter({results: newResults});
     })
     .catch((err) => console.log('Error saving article: ',err));
   }
 
   render(){
     return (
-      <div className={(this.state.saved) ? "article-result saved" : "article-result" }>
-        <h4><a href={this.props.weblink} target="_blank">{this.props.heading}</a></h4>
+      <div className={(this.props.saved) ? "article-result saved" : "article-result" }>
+        <h4><a href={this.props.weblink} target="_blank" rel="noopener noreferrer">{this.props.heading}</a></h4>
         <button className="save-button" onClick={this.saveArticle} type="button">Save</button>
       </div>
     )
@@ -42,6 +45,12 @@ class Results extends Component {
     super(props)
   }
 
+  // toggle freshResult back to false once user has navigated to results
+  // otherwise user will be redirected back to results
+  componentDidMount(){
+    this.props.appStateSetter({freshResults: false});
+  }
+
   render(){
     let results = this.props.results;
     return (
@@ -50,11 +59,15 @@ class Results extends Component {
         {results.map((item, index) => {
           return (
             <Article
-              key={index} 
+              results={results}
+              appStateSetter={this.props.appStateSetter}
+              key={index}
+              index={index} 
               heading={item.heading}
               weblink={item.weblink}
               author={item.author}
               pubDate={item.pubDate}
+              saved={item.saved}
             />
           );
         })}    

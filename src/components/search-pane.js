@@ -62,13 +62,14 @@ class SearchPane extends Component {
       // make sure to update state with the final values and run callback after state is changed
       // this.props.fetchResults triggers an api request to NY Times via App.
       this.props.appStateSetter(criteriaForApp,this.props.fetchResults);
+
     } 
   }
   
   render(){
     return (
       <div className="comp-pane">
-        <h3 className="title-box">Search</h3>
+        <h3 className="title-box">Find Articles</h3>
         {/* run handleSubmit on Submit button click */}
         <form onSubmit={this.handleSubmit}>
           <label>Topic

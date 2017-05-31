@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import Results from './components/results';
 import SavedArticles from './components/saved-articles';
 import SearchPane from './components/search-pane';
+import Nav from './components/nav';
 import axios from 'axios';
 
 class App extends Component {
@@ -11,7 +13,8 @@ class App extends Component {
       topic: "", 
       startYear: "", 
       endYear: "",
-      results : [] 
+      results : [],
+      freshResults : false 
     }
     this.fetchResults = this.fetchResults.bind(this);   
     this.stateSetter = this.stateSetter.bind(this);
@@ -28,12 +31,13 @@ class App extends Component {
     return yearURLAddin;
   }
 
-  stateSetter({topic, startYear, endYear, nytQueryed, results}, callback){
+  stateSetter({topic, startYear, endYear, nytQueryed, results, freshResults}, callback){
     this.setState({
       topic : topic !== undefined ? topic : this.state.topic,
       startYear : startYear !== undefined ? startYear : this.state.startYear,
       endYear : endYear !== undefined ? endYear : this.state.endYear,
-      results : results !== undefined ? results : this.state.results
+      results : results !== undefined ? results : this.state.results,
+      freshResults : freshResults !== undefined ? freshResults : this.state.freshResults
     },callback);
   }
   
@@ -61,9 +65,11 @@ class App extends Component {
         article.author = byline !== null ? result.byline.original || "author not provided" : "author not provided";
         article.pubDate = result.pub_date || "date not provided";
         article.weblink = result.web_url || "url not provided";
+        article.saved = false;
         newResultState.push(article);
       });
-      this.setState({results: newResultState});
+      this.setState({topic: "", startYear: "", endYear: "", results: newResultState});
+      this.setState({freshResults: true});
     })
     .catch((error)=>{
       console.log(error);
@@ -71,28 +77,39 @@ class App extends Component {
     });
   }
 
-  // saveIt(article){
-  //   let artArray = this.state.savedArticles;
-  //   artArray.push(article);
-  //   this.setState({savedArticles: artArray});
-  // }
-
   render() {
     return (
-      <div className="App">
-        <div className="app-header">
-          <h1>New York Times Article Scrubber</h1>
+      <Router>
+        <div className="App">
+          <div className="app-header">
+            <h1>New York Times Article Search</h1>
+          </div>
+          <Nav/>
+          <Switch>
+            <Route 
+              exact path='/' 
+              render={() => this.state.freshResults ?
+                  <Redirect to='/results' /> :
+                  <SearchPane
+                    appStateSetter={this.stateSetter}
+                    topic={this.state.topic}
+                    startYear={this.state.startYear}
+                    endYear={this.state.endYear}
+                    fetchResults={this.fetchResults} 
+                  />} 
+            />
+            <Route 
+              path='/results' 
+              render={() => <Results 
+                              results={this.state.results}
+                              appStateSetter={this.stateSetter}
+                            />} 
+            />
+            <Route path='/saved' component={SavedArticles} />
+            <Route render={() => <h3>Page Not Found</h3>} />
+          </Switch>
         </div>
-        <SearchPane
-          appStateSetter={this.stateSetter}
-          topic={this.state.topic}
-          startYear={this.state.startYear}
-          endYear={this.state.endYear}
-          fetchResults={this.fetchResults}
-        />
-        <Results results={this.state.results}/>
-        <SavedArticles/>
-      </div>
+      </Router>
     );
   }
 }

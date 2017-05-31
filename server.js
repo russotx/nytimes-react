@@ -7,9 +7,11 @@ const mongoose = require('mongoose');
 const mongoURI = 'mongodb://heroku_s0jdcxjc:jhu1kbd1sb862og3aac5ehi2mf@ds019038.mlab.com:19038/heroku_s0jdcxjc';
 const localMongo = 'mongodb://localhost/nytreact';
 
-app.set('port', (process.env.PORT || 3001));
+const localPORT = 3001;
 
-mongoose.connect(mongoURI || localMongo);
+app.set('port', (process.env.PORT || localPORT));
+
+mongoose.connect(/*mongoURI*/ localMongo);
 
 let schema = mongoose.Schema;
 
@@ -48,7 +50,7 @@ app.get('/api/saved/', function(req,res){
   article.find({},(err,doc) => {
     if(err){
       res.send(err); 
-      console.log(error);
+      console.log(err);
     } else {
       console.log(doc);
       res.send(doc);

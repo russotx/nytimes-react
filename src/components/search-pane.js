@@ -52,7 +52,6 @@ class SearchPane extends Component {
         okToProceed = this.isYearValid("endYear",endYear);
       }
     } else this.isYearValid("endYear",endYear);
-    console.log("data validation result: "+okToProceed);
     if (okToProceed) {
       const criteriaForApp = {
         topic : topic,

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001/",
+  "engine": {
+  "node": "^8.1.4"
+  },
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
